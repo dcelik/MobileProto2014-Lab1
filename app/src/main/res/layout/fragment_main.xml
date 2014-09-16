@@ -23,9 +23,26 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"/>
 
+    <View
+        android:id="@+id/centerShim"
+        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:visibility="invisible"
+        android:layout_centerHorizontal="true"/>
+
     <ListView
-        android:id="@+id/my_list_view"
-        android:layout_width="fill_parent"
+        android:id="@+id/left_list_view"
+        android:layout_width="match_parent"
+        android:layout_alignParentLeft="true"
         android:layout_height="fill_parent"
+        android:layout_toLeftOf="@id/centerShim"
+        android:layout_above="@id/add_button"/>
+
+
+    <ListView
+        android:id="@+id/right_list_view"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_toRightOf="@id/centerShim"
         android:layout_above="@id/add_button"/>
 </RelativeLayout>
