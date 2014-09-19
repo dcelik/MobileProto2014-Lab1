@@ -1,7 +1,8 @@
 package com.dcelik.myapplicationlistview;
 
-import android.app.Activity;
 import android.app.Fragment;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Calendar;
 
 /**
  * Created by dcelik on 9/11/14.
@@ -20,6 +22,14 @@ public class MyFragment extends Fragment{
     public MyFragment() {
     }
 
+    String numid = "";
+    String username = "";
+    Calendar c = Calendar.getInstance();
+    Bitmap bmp = (Bitmap) BitmapFactory.decodeResource(getResources(), R.drawable.androidguy);
+    int bytes = bmp.getByteCount();
+    ByteBuffer buffer = (ByteBuffer) ByteBuffer.allocate(bytes);
+    byte[] array = buffer.array();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -27,31 +37,23 @@ public class MyFragment extends Fragment{
 
         final EditText myText = (EditText) rootView.findViewById(R.id.text_to_add);
         Button myButton = (Button) rootView.findViewById(R.id.add_button);
-        final ListView leftListView = (ListView) rootView.findViewById(R.id.left_list_view);
-        final ListView rightListView = (ListView) rootView.findViewById(R.id.right_list_view);
+        final ListView myListView = (ListView) rootView.findViewById(R.id.list_view);
 
-        final ArrayList<String> leftchat = new ArrayList<String>();
-        final ArrayList<String> rightchat = new ArrayList<String>();
-        final ChatAdapter leftAdapter = new ChatAdapter(getActivity(), R.layout.chat_item,leftchat);
-        final ChatAdapter rightAdapter = new ChatAdapter(getActivity(),R.layout.chat_item,rightchat);
-
+        final ArrayList<Chat> chats = new ArrayList<Chat>();
+        final ChatAdapter myAdapter = new ChatAdapter(getActivity(), chats);
         myButton.setText(R.string.button_press);
         myButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                leftAdapter.add(myText.getText().toString());
-                rightAdapter.add(myText.getText().toString());
+                //Chat toAdd = new Chat(numid,username,String.valueOf(c.get(Calendar.SECOND)),myText.getText().toString(), bmp);
+                Chat toAdd = new Chat(numid,username,String.valueOf(c.get(Calendar.SECOND)),myText.getText().toString());
+                myAdapter.add(toAdd);
                 myText.setText("");
-                leftAdapter.notifyDataSetChanged();
-                rightAdapter.notifyDataSetChanged();
-                leftListView.setSelection(leftchat.size());
-                rightListView.setSelection(rightchat.size());
+                myAdapter.notifyDataSetChanged();
+                myListView.setSelection(chats.size());
             }
         });
 
-
-
-        leftListView.setAdapter(leftAdapter);
-        rightListView.setAdapter(rightAdapter);
+        myListView.setAdapter(myAdapter);
 
 
         return rootView;

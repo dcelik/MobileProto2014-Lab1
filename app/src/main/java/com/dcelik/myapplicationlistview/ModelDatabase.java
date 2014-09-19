@@ -17,8 +17,9 @@ public class ModelDatabase extends SQLiteOpenHelper {
     //Table Fields
     public static final String CHAT_ID = "ID";
     public static final String CHAT_NAME = "name";
-    public static final String CHAT_PASSWORD = "password";
+    public static final String CHAT_TIME = "time";
     public static final String CHAT_MESSAGE = "message";
+    public static final String CHAT_IMAGE = "image";
 
     //Database Info
     private static final String DATABASE_NAME = "ChatAppDatabase";
@@ -29,8 +30,9 @@ public class ModelDatabase extends SQLiteOpenHelper {
             + TABLE_NAME + "("
             + CHAT_ID + " TEXT NOT NULL UNIQUE, "
             + CHAT_NAME + " TEXT NOT NULL, "
-            + CHAT_PASSWORD + " TEXT NOT NULL, "
-            + CHAT_MESSAGE + " TEXT NOT NULL, ";
+            + CHAT_TIME + " TEXT NOT NULL, "
+            + CHAT_MESSAGE + " TEXT NOT NULL, "
+            + CHAT_IMAGE + " BLOB );";
 
     //Default Constructor
     public ModelDatabase(Context context){

@@ -2,6 +2,7 @@ package com.dcelik.myapplicationlistview;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +23,8 @@ public class MainActivity extends Activity {
                     .commit();
         }
         Log.i(MainActivity.class.getSimpleName(), "FILLIPOS SAYS HELLLOOOOO");
+        HandlerDatabase db = new HandlerDatabase(this);
+        db.open();
     }
 
     @Override

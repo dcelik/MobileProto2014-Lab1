@@ -21,28 +21,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true"
+        android:background="#19B2C6"/>
 
-    <View
-        android:id="@+id/centerShim"
-        android:layout_height="match_parent"
-        android:layout_width="0dp"
-        android:visibility="invisible"
-        android:layout_centerHorizontal="true"/>
 
     <ListView
-        android:id="@+id/left_list_view"
+        android:id="@+id/list_view"
         android:layout_width="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_height="fill_parent"
-        android:layout_toLeftOf="@id/centerShim"
         android:layout_above="@id/add_button"/>
 
-
-    <ListView
-        android:id="@+id/right_list_view"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_toRightOf="@id/centerShim"
-        android:layout_above="@id/add_button"/>
 </RelativeLayout>
