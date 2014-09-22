@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 
 
 public class MainActivity extends Activity {
+
+    HandlerDatabase db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,7 +25,7 @@ public class MainActivity extends Activity {
                     .commit();
         }
         Log.i(MainActivity.class.getSimpleName(), "FILLIPOS SAYS HELLLOOOOO");
-        HandlerDatabase db = new HandlerDatabase(this);
+        db = new HandlerDatabase(this);
         db.open();
     }
 
