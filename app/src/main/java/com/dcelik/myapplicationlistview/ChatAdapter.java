@@ -49,12 +49,13 @@ public class ChatAdapter extends ArrayAdapter{
         }
 
         //Set Image based on BitMap
-        //Chat selectedChat = addedChats.get(position);
+        Chat selectedChat = addedChats.get(position);
 
-        //ImageView image = (ImageView) convertView.findViewById(R.id.list_view);
-        //image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        //image.setImageBitmap(BitmapFactory.decodeByteArray(selectedChat.image, 0, selectedChat.image.length));
-
+        //Using Drawable is enough
+        ImageView image = (ImageView) convertView.findViewById(R.id.chat_image);
+        image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+//        image.setImageBitmap(BitmapFactory.decodeByteArray(selectedChat.image, 0, selectedChat.image.length));
+        image.setImageDrawable(activity.getResources().getDrawable(R.drawable.androidguy));
         return convertView;
     }
 }

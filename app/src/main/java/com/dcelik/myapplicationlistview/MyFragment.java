@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.ListView;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 /**
@@ -25,15 +27,19 @@ public class MyFragment extends Fragment{
     String numid = "";
     String username = "";
     Calendar c = Calendar.getInstance();
-    Bitmap bmp = (Bitmap) BitmapFactory.decodeResource(getResources(), R.drawable.androidguy);
-    int bytes = bmp.getByteCount();
-    ByteBuffer buffer = (ByteBuffer) ByteBuffer.allocate(bytes);
-    byte[] array = buffer.array();
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+        //FIXME - NOT NECESSARY
+//        Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.androidguy);
+//        int bytes = bmp.getByteCount();
+//        ByteBuffer buffer = ByteBuffer.allocate(bytes);
+//        byte[] array = buffer.array();
+//        Log.i("DebugDebug", Arrays.toString(array));
 
         final EditText myText = (EditText) rootView.findViewById(R.id.text_to_add);
         Button myButton = (Button) rootView.findViewById(R.id.add_button);
