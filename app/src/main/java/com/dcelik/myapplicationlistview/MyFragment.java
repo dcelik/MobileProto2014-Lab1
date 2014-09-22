@@ -1,13 +1,7 @@
 package com.dcelik.myapplicationlistview;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.Fragment;
-import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
