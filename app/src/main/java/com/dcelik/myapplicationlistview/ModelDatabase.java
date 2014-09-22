@@ -31,7 +31,7 @@ public class ModelDatabase extends SQLiteOpenHelper {
             + CHAT_ID + " TEXT NOT NULL UNIQUE, "
             + CHAT_NAME + " TEXT NOT NULL, "
             + CHAT_TIME + " TEXT NOT NULL, "
-            + CHAT_MESSAGE + " TEXT NOT NULL ):";
+            + CHAT_MESSAGE + " TEXT NOT NULL );";
             //+ CHAT_IMAGE + " BLOB );";
 
     //Default Constructor
