@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -51,10 +52,17 @@ public class ChatAdapter extends ArrayAdapter{
         //Set Image based on BitMap
         Chat selectedChat = addedChats.get(position);
 
+        TextView name = (TextView) convertView.findViewById(R.id.chat_name);
+        TextView message = (TextView) convertView.findViewById(R.id.chat_message);
+        TextView date = (TextView) convertView.findViewById(R.id.chat_time);
+        name.setText(selectedChat.name);
+        message.setText(selectedChat.message);
+        date.setText(selectedChat.time);
+
         //Using Drawable is enough
         ImageView image = (ImageView) convertView.findViewById(R.id.chat_image);
         image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-//        image.setImageBitmap(BitmapFactory.decodeByteArray(selectedChat.image, 0, selectedChat.image.length));
+        image.setScaleType(ImageView.ScaleType.FIT_START);
         image.setImageDrawable(activity.getResources().getDrawable(R.drawable.androidguy));
         return convertView;
     }

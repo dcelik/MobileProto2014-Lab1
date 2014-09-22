@@ -2,8 +2,10 @@
 <resources>
 
     <string name="app_name">MyApplicationListView</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Change User</string>
     <string name="button_press">Add!</string>
+    <string name="nameChange">What would you like your new Username to be?</string>
+    <string name="change">Change!</string>
+    <string name="cancel">Cancel</string>
 
 </resources>
