@@ -48,7 +48,7 @@ public class HandlerDatabase {
         values.put(ModelDatabase.CHAT_NAME, chat.name);
         values.put(ModelDatabase.CHAT_TIME, chat.time);
         values.put(ModelDatabase.CHAT_MESSAGE, chat.message);
-        database.update(ModelDatabase.TABLE_NAME, values, ModelDatabase.CHAT_ID, null);
+        database.update(ModelDatabase.TABLE_NAME, values, ModelDatabase.CHAT_ID + " = " + chat.id, null);
     }
 
     /**
@@ -97,14 +97,13 @@ public class HandlerDatabase {
     /**
      * Additional Helpers
      */
-    //Sweep Through Cursor and return a List of Kitties
+    //Sweep Through Cursor and return a List of Chats
     private ArrayList<Chat> sweepCursor(Cursor cursor){
         ArrayList<Chat> myChats = new ArrayList<Chat>();
 
         //Get to the beginning of the cursor
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
-            //Get the Kitty
             Chat myChat = new Chat(
                     cursor.getString(0),
                     cursor.getString(1),
@@ -112,9 +111,7 @@ public class HandlerDatabase {
                     cursor.getString(3)//,
                     //cursor.getBlob(6)
             );
-            //Add the Kitty
             myChats.add(myChat);
-            //Go on to the next Kitty
             cursor.moveToNext();
         }
         return myChats;

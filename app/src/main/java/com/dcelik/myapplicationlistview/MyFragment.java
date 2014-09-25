@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -82,8 +83,18 @@ public class MyFragment extends Fragment{
                 }
             }
         });
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String newmsg = "TEST";
+                Chat chatEdit = (Chat)parent.getItemAtPosition(position);
+                chatEdit.setMessage(newmsg);
+                db.updateChat(chatEdit);
+                refreshFragment();
+            }
+        });
 
-        listView.setAdapter(chatAdapter);
+                listView.setAdapter(chatAdapter);
         return rootView;
     }
 
@@ -94,6 +105,7 @@ public class MyFragment extends Fragment{
         refreshFragment();
     }
 
+
     //When the Fragment is resumed
     @Override
     public void onResume() {
@@ -102,8 +114,7 @@ public class MyFragment extends Fragment{
     }
 
     public void refreshFragment(){
-        chatAdapter.clear();
-        chatAdapter.addAll(db.getAllChats());
+
         chatAdapter.notifyDataSetChanged();
         listView.invalidate();
     }
