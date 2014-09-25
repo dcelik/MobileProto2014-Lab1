@@ -10,10 +10,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.firebase.client.Firebase;
+
 
 public class MainActivity extends Activity {
 
     HandlerDatabase db;
+    Firebase fb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +29,7 @@ public class MainActivity extends Activity {
         }
         Log.i(MainActivity.class.getSimpleName(), "FILLIPOS SAYS HELLLOOOOO");
         db = new HandlerDatabase(this);
+        fb = new Firebase("https://mobilproto2014.firebaseio.com/chatroom/0");
         db.open();
     }
 

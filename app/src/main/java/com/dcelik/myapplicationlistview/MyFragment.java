@@ -1,6 +1,9 @@
 package com.dcelik.myapplicationlistview;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +12,9 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -22,6 +28,7 @@ public class MyFragment extends Fragment{
     public MyFragment() {
     }
 
+    Firebase fb;
     HandlerDatabase db;
     ChatAdapter chatAdapter;
     ListView listView;
@@ -86,11 +93,10 @@ public class MyFragment extends Fragment{
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String newmsg = "TEST";
                 Chat chatEdit = (Chat)parent.getItemAtPosition(position);
-                chatEdit.setMessage(newmsg);
+                chatEdit.setMessage("Test");
                 db.updateChat(chatEdit);
-                refreshFragment();
+                chatAdapter.notifyDataSetChanged();
             }
         });
 
@@ -102,7 +108,7 @@ public class MyFragment extends Fragment{
     @Override
     public void onStart() {
         super.onStart();
-        refreshFragment();
+        chatAdapter.notifyDataSetChanged();
     }
 
 
@@ -110,13 +116,6 @@ public class MyFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-        refreshFragment();
-    }
-
-    public void refreshFragment(){
-
         chatAdapter.notifyDataSetChanged();
-        listView.invalidate();
     }
-
 }
