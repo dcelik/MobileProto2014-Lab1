@@ -10,7 +10,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 
 public class MainActivity extends Activity {
@@ -29,7 +32,8 @@ public class MainActivity extends Activity {
         }
         Log.i(MainActivity.class.getSimpleName(), "FILLIPOS SAYS HELLLOOOOO");
         db = new HandlerDatabase(this);
-        fb = new Firebase("https://mobilproto2014.firebaseio.com/chatroom/0");
+        //fb = new Firebase("https://mobilproto2014.firebaseio.com/chatroom/0");
+        fb = new Firebase("https://scorching-fire-1825.firebaseio.com/Chats");
         db.open();
     }
 

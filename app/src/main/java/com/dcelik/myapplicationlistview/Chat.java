@@ -17,9 +17,18 @@ public class Chat {
         //this.image = image;
     }
 
+    /**
+     * Get Fields
+     */
     public String getId(){
         return this.id;
     }
+
+    public String getName() { return this.name;}
+
+    public String getMessage() {return this.message;}
+
+    public String getTime() {return this.time;}
 
     /**
      * Set Fields

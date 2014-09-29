@@ -1,9 +1,7 @@
 package com.dcelik.myapplicationlistview;
 
-import android.app.Activity;
-import android.app.AlertDialog;
+
 import android.app.Fragment;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,13 +10,20 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 import java.util.TimeZone;
 
 /**
@@ -33,7 +38,7 @@ public class MyFragment extends Fragment{
     ChatAdapter chatAdapter;
     ListView listView;
     int numid = 0;
-    String username = "Filippos";
+    String username = "Deniz";
     TimeZone EZT = TimeZone.getTimeZone("GMT-4");
 
     public void setUsername(String str){
@@ -44,6 +49,7 @@ public class MyFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         db = ((MainActivity)getActivity()).db;
+        fb = ((MainActivity)getActivity()).fb;
         //db.deleteAllChats();
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
@@ -79,7 +85,8 @@ public class MyFragment extends Fragment{
                     while(db.getChatByID(String.valueOf(numid))!=null){
                         numid++;
                     }
-                    db.addChatToDatabase(String.valueOf(numid),username,date,msg);
+                    db.addChatToDatabase(String.valueOf(numid), username, date, msg);
+                    refreshFb();
                     numid++;
                     //myAdapter.add(toAdd);
                     myText.setText("");
@@ -92,14 +99,48 @@ public class MyFragment extends Fragment{
         });
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Chat chatEdit = (Chat)parent.getItemAtPosition(position);
-                chatEdit.setMessage("Test");
-                db.updateChat(chatEdit);
-                chatAdapter.notifyDataSetChanged();
+            public void onItemClick(final AdapterView<?> parent, View view, final int position, long id) {
+
+                new EditingText(getActivity(), new StringCallback() {
+                    @Override
+                    public void handleString(String value) {
+                        Chat chatEdit = (Chat) parent.getItemAtPosition(position);
+                        chatEdit.setMessage(value);
+                        db.updateChat(chatEdit);
+                        chatAdapter.notifyDataSetChanged();
+                        refreshFb();
+                    }
+
+                    @Override
+                    public void handleDelete() {
+                        Chat chatDeleted = (Chat) parent.getItemAtPosition(position);
+                        db.deleteChatById(chatDeleted.getId());
+                        chatAdapter.clear();
+                        chatAdapter.addAll(db.getAllChats());
+                        chatAdapter.notifyDataSetChanged();
+                        listView.setSelection(numid);
+                        refreshFb();
+                    }
+                }).show();
             }
         });
+        fb.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                Map<String, Object> fbchats = (Map<String, Object>) snapshot.getValue();
+                if(fbchats!=null){
+                    System.out.println("Id:" + fbchats.get("id"));
+                    System.out.println("Name:" + fbchats.get("name"));
+                    System.out.println("Time:" + fbchats.get("time"));
+                    System.out.println("Message:" + fbchats.get("message"));
+                }
+            }
 
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                System.out.println("The read failed: " + firebaseError.getMessage());
+            }
+        });
                 listView.setAdapter(chatAdapter);
         return rootView;
     }
@@ -111,6 +152,18 @@ public class MyFragment extends Fragment{
         chatAdapter.notifyDataSetChanged();
     }
 
+    public void refreshFb(){
+        fb.setValue(null);
+        ArrayList<Chat> chats = db.getAllChats();
+        for (Chat ch : chats){
+            Map<String, String> fbchat = new HashMap<String, String>();
+            fbchat.put("id",ch.getId());
+            fbchat.put("name",ch.getName());
+            fbchat.put("time",ch.getTime());
+            fbchat.put("message",ch.getMessage());
+            fb.push().setValue(fbchat);
+        }
+    }
 
     //When the Fragment is resumed
     @Override

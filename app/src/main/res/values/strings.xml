@@ -7,5 +7,6 @@
     <string name="nameChange">What would you like your new Username to be?</string>
     <string name="change">Change!</string>
     <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
 
 </resources>
