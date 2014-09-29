@@ -17,10 +17,15 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TimeZone;
 
 /**
@@ -47,6 +52,11 @@ public class MyFragment extends Fragment{
                              Bundle savedInstanceState) {
         db = ((MainActivity)getActivity()).db;
         fb = ((MainActivity)getActivity()).fb;
+        int max = 0;
+        for (Chat c:db.getAllChats()) {
+            max = Math.max(new Integer(c.getId()),max);
+        }
+        numid = max+1;
         //db.deleteAllChats();
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
@@ -58,30 +68,32 @@ public class MyFragment extends Fragment{
         chatAdapter = new ChatAdapter(getActivity(), chats);
 
         myButton.setText(R.string.button_press);
-        myButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                Calendar c = Calendar.getInstance(EZT,Locale.US);
+        myButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Calendar c = Calendar.getInstance(EZT, Locale.US);
                 String secs = String.valueOf(c.get(Calendar.SECOND));
                 String mins = String.valueOf(c.get(Calendar.MINUTE));
                 String hrs = String.valueOf(c.get(Calendar.HOUR_OF_DAY));
-                if(c.get(Calendar.SECOND)<10){
-                     secs = "0"+secs;
+                if (c.get(Calendar.SECOND) < 10) {
+                    secs = "0" + secs;
                 }
-                if(c.get(Calendar.MINUTE)<10){
-                    mins = "0"+mins;
+                if (c.get(Calendar.MINUTE) < 10) {
+                    mins = "0" + mins;
                 }
-                if(c.get(Calendar.HOUR_OF_DAY)<10){
-                    hrs = "0"+hrs;
+                if (c.get(Calendar.HOUR_OF_DAY) < 10) {
+                    hrs = "0" + hrs;
                 }
                 String msg = myText.getText().toString();
-                if(msg.length()>0) {
+                if (msg.length() > 0) {
                     String date = String.valueOf(hrs + ":" + mins + ":" + secs + " " +
                             c.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US) + " " +
                             c.get(Calendar.DAY_OF_MONTH) + ", " + c.get(Calendar.YEAR));
                     //Chat toAdd = new Chat(numid, username, date, msg);
-                    while(db.getChatByID(String.valueOf(numid))!=null){
-                        numid++;
+                    int max = 0;
+                    for (Chat ch:db.getAllChats()) {
+                        max = Math.max(new Integer(ch.getId()),max);
                     }
+                    numid = max+1;
                     db.addChatToDatabase(String.valueOf(numid), username, date, msg);
                     refreshFb();
                     numid++;
@@ -124,13 +136,43 @@ public class MyFragment extends Fragment{
         fb.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+                ArrayList<Chat> allchats= new ArrayList<Chat>();
                 Map<String, Object> fbchats = (Map<String, Object>) snapshot.getValue();
                 if(fbchats!=null){
-                    System.out.println("Id:" + fbchats.get("id"));
-                    System.out.println("Name:" + fbchats.get("name"));
-                    System.out.println("Time:" + fbchats.get("time"));
-                    System.out.println("Message:" + fbchats.get("message"));
+                    ArrayList<Object> values = new ArrayList<Object>();
+                    values.addAll(fbchats.values());
+                    for(Object obj:values){
+                        HashMap<String,Object> chat = (HashMap<String,Object>) obj;
+                        ArrayList<Object> vals = new ArrayList<Object>();
+                        vals.addAll(chat.values());
+                        String message = (String) vals.get(0);
+                        String id = (String) vals.get(1);
+                        String time = (String) vals.get(2);
+                        String name = (String) vals.get(3);
+                        Chat toAdd = new Chat(id,name,time,message);
+                        allchats.add(toAdd);
+                    }
+                    Collections.sort(allchats, new Comparator<Chat>() {
+                        @Override
+                        public int compare(Chat z1, Chat z2) {
+                            if (new Integer(z1.getId()) > new Integer(z2.getId()))
+                                return 1;
+                            if (new Integer(z1.getId()) < new Integer(z2.getId()))
+                                return -1;
+                            return 0;
+                        }
+                    });
+                    db.deleteAllChats();
+                    for(Chat c:allchats){
+                        db.addChatToDatabase(c.getId(),c.getName(),c.getTime(),c.getMessage());
+                    }
+                    int max = 0;
+                    for (Chat c:db.getAllChats()) {
+                        max = Math.max(new Integer(c.getId()),max);
+                    }
+                    numid = max+1;
                 }
+                chatAdapter.notifyDataSetChanged();
             }
 
             @Override
