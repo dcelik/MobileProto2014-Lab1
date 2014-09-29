@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -20,10 +19,8 @@ import com.firebase.client.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.TimeZone;
 
 /**
