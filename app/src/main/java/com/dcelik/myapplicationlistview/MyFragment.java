@@ -3,6 +3,7 @@ package com.dcelik.myapplicationlistview;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -163,13 +164,14 @@ public class MyFragment extends Fragment{
                         }
                     });
                     db.deleteAllChats();
+                    int max = 0;
                     for(Chat c:allchats){
                         db.addChatToDatabase(c.getId(),c.getName(),c.getTime(),c.getMessage());
-                    }
-                    int max = 0;
-                    for (Chat c:db.getAllChats()) {
                         max = Math.max(new Integer(c.getId()),max);
+
                     }
+                    chatAdapter.addAll(db.getAllChats());
+                    listView.setSelection(chatAdapter.getCount());
                     numid = max+1;
                 }
                 chatAdapter.notifyDataSetChanged();
